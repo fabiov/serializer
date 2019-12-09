@@ -3,10 +3,7 @@
 namespace CNastasi\Serializer\Unserializer;
 
 use CNastasi\Example\Address;
-use CNastasi\Example\Age;
-use CNastasi\Example\Name;
 use CNastasi\Example\Person;
-use Cnastasi\Serializer\Serializer\CompositeValueObjectSerializer;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionProperty;
