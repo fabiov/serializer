@@ -1,0 +1,29 @@
+{
+  "name": "cnastasi/serializer",
+  "description": "A experimental serializer using php 7.4 typed properties and reflection",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Christian Nastasi",
+      "email": "christian.nastasi@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "8.5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "CNastasi\\Serializer\\": "src/",
+      "CNastasi\\Example\\": "example/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CNastasi\\Serializer\\": "tests/"
+    }
+  }
+}
