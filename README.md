@@ -3,7 +3,29 @@
 ### How to install
 
 ### How to use
-#### Simple Value Object
+#### Serialize a simple value object
+```php
+use CNastasi\Serializer\Serializer\SimpleValueObjectSerializer;
+use CNastasi\Example\Age;
+
+$serializer = new SimpleValueObjectSerializer();
+
+// $result === 37
+$result = $serializer->serialize(new Age(37));
+```
+
+#### Unserialize a simple value object
+```php
+use CNastasi\Serializer\Unserializer\SimpleValueObjectUnserializer;
+use CNastasi\Example\Age;
+
+$serializer = new SimpleValueObjectUnserializer();
+
+// $result === Age(37)
+$result = $serializer->unserialize(37, Age::class);
+```
+
+#### Complex example
 ```php
 require_once 'vendor/autoload.php';
 
