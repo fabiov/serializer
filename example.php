@@ -1,10 +1,5 @@
-# Serializer
+<?php
 
-### How to install
-
-### How to use
-#### Simple Value Object
-```php
 require_once 'vendor/autoload.php';
 
 use CNastasi\Example\Address;
@@ -72,4 +67,4 @@ var_dump($serializer->serialize($person));
   }
 
  */
-```
+
