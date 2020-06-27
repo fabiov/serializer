@@ -22,9 +22,9 @@ class CompositeValueObjectUnserializer implements ValueObjectUnserializer
     {
         $class = new ReflectionClass($targetClass);
 
-        $constructor = $class->getConstructor();
+        $costructor = $class->getConstructor();
 
-        $parameters = $constructor->getParameters();
+        $parameters = $costructor->getParameters();
 
         $args = [];
 
