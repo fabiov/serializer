@@ -22,15 +22,15 @@ class CompositeValueObjectUnserializer implements ValueObjectUnserializer
     {
         $class = new ReflectionClass($targetClass);
 
-        $costructor = $class->getConstructor();
+        $constructor = $class->getConstructor();
 
-        $parameters = $costructor->getParameters();
+        $parameters = $constructor->getParameters();
 
         $args = [];
 
         foreach ($parameters as $parameter) {
             $type         = $parameter->getType();
-            $typeAsString = (string)$type;
+            $typeAsString = $type->getName();
             $name         = $parameter->getName();
             $value        = $data[$name];
 
