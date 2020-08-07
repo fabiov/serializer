@@ -135,6 +135,7 @@ class CompositeValueObjectSerializer implements ValueObjectSerializer
 
     public function accept($object): bool
     {
-        return $object instanceof CompositeValueObject;
+        return $object instanceof CompositeValueObject
+            || $object instanceof SimpleValueObject;
     }
 }

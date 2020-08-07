@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CNastasi\Serializer\Serializer;
@@ -8,6 +9,8 @@ use CNastasi\Example\Age;
 use CNastasi\Example\Name;
 use CNastasi\Example\Person;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
+use CNastasi\Serializer\ValueObject\CompositeValueObject;
+use CNastasi\Serializer\ValueObject\SimpleValueObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,15 +30,16 @@ class CompositeValueObjectSerializerTest extends TestCase
     /**
      * @test
      */
-    public function shouldSerialize1()
+    public function test_plainComposite()
     {
         $street = '115 Somewhere Street';
-        $city   = 'Unknown Town';
+        $city = 'Unknown Town';
 
-        $this->assertEquals([
-            'city'   => $city,
-            'street' => $street
-        ],
+        $this->assertEquals(
+            [
+                'city' => $city,
+                'street' => $street
+            ],
             $this->serializer->serialize(new Address($street, $city))
         );
     }
@@ -43,12 +47,12 @@ class CompositeValueObjectSerializerTest extends TestCase
     /**
      * @test
      */
-    public function shouldSerialize2()
+    public function test_nestedComposite()
     {
-        $name   = 'John Smith';
-        $age    = 37;
+        $name = 'John Smith';
+        $age = 37;
         $street = '156 Somewhere Street';
-        $city   = 'NYC';
+        $city = 'NYC';
 
         $person = new Person(
             new Name($name),
@@ -58,36 +62,73 @@ class CompositeValueObjectSerializerTest extends TestCase
         );
 
         $expectedResult = [
-            'name'    => $name,
-            'age'     => $age,
+            'name' => $name,
+            'age' => $age,
             'address' => [
                 'street' => $street,
-                'city'   => $city,
+                'city' => $city,
             ],
-            'phone'   => null,
-            'parent'  => [
-                'name'    => $name,
-                'age'     => $age,
+            'phone' => null,
+            'parent' => [
+                'name' => $name,
+                'age' => $age,
                 'address' => [
                     'street' => $street,
-                    'city'   => $city,
+                    'city' => $city,
                 ],
-                'phone'   => null,
-                'parent'  => null
+                'phone' => null,
+                'parent' => null
             ]
         ];
 
         $this->assertEquals($expectedResult, $this->serializer->serialize($person));
     }
 
+    public function test_simpleObject()
+    {
+        $age = 42;
+
+        $this->assertSame(
+            $age,
+            $this->serializer->serialize(new Age($age))
+        );
+    }
+
     /**
      * @test
      */
-    public function shouldRaiseAnExceptions()
+    public function shouldRaiseAnExceptions1()
     {
         $this->expectException(UnableToSerializeException::class);
         $this->expectExceptionMessage('Serializer was not able to serialize stdClass');
 
         $this->serializer->serialize(new \stdClass());
+    }
+    /**
+     * @test
+     */
+    public function shouldRaiseAnExceptions2()
+    {
+        $this->expectException(UnableToSerializeException::class);
+        $this->expectExceptionMessage('Serializer was not able to serialize stdClass');
+
+        $this->serializer->serialize(new class() implements CompositeValueObject {
+            private \stdClass $property;
+
+            public function __construct()
+            {
+                $this->property = new \stdClass();
+            }
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptCompositeValueObject()
+    {
+        self::assertTrue($this->serializer->accept(new Address('ss', 'ss')));
+        self::assertTrue($this->serializer->accept(new Age (42)));
+        self::assertFalse($this->serializer->accept(new \stdClass()));
     }
 }
