@@ -13,11 +13,11 @@ class SimpleValueObjectSerializer implements ValueObjectSerializer
      */
     public function serialize(object $object)
     {
-        if ($this->accept($object)) {
-            return $object->__getPrimitiveValue();
+        if (!$this->accept($object)) {
+            throw new UnableToSerializeException($object);
         }
 
-        throw new UnableToSerializeException($object);
+        return $object->value();
     }
 
     public function accept($object): bool

@@ -3,11 +3,15 @@
 namespace CNastasi\Serializer\Unserializer;
 
 use CNastasi\Example\Address;
+use CNastasi\Example\Name;
 use CNastasi\Example\Person;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * @covers \CNastasi\Serializer\Unserializer\CollectionUnserializer
+ */
 class CompositeValueObjectUnserializerTest extends TestCase
 {
     private $unserializer;

@@ -12,6 +12,9 @@ use CNastasi\Serializer\Serializer\SimpleValueObjectSerializer;
 use CNastasi\Serializer\Serializer\ValueObjectSerializerDefault;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \CNastasi\Serializer\Serializer\ValueObjectSerializerDefault
+ */
 class ValueObjectSerializerTest extends TestCase
 {
     private ValueObjectSerializerDefault $serializer;

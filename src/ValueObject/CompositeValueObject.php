@@ -8,7 +8,7 @@ namespace CNastasi\Serializer\ValueObject;
  *
  * @package CNastasi\Serializer\ValueObject
  */
-interface CompositeValueObject
+interface CompositeValueObject extends ValueObject
 {
 
 }

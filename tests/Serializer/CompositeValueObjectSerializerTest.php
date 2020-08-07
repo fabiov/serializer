@@ -10,6 +10,9 @@ use CNastasi\Example\Person;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \CNastasi\Serializer\Serializer\CompositeValueObjectSerializer
+ */
 class CompositeValueObjectSerializerTest extends TestCase
 {
     private CompositeValueObjectSerializer $serializer;
@@ -83,8 +86,8 @@ class CompositeValueObjectSerializerTest extends TestCase
     public function shouldRaiseAnExceptions()
     {
         $this->expectException(UnableToSerializeException::class);
-        $this->expectExceptionMessage('Serializer was not able to serialize CNastasi\Example\Age');
+        $this->expectExceptionMessage('Serializer was not able to serialize stdClass');
 
-        $this->serializer->serialize(new Age(44));
+        $this->serializer->serialize(new \stdClass());
     }
 }

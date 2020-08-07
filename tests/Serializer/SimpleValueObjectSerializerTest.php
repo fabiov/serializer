@@ -9,6 +9,9 @@ use CNastasi\Example\Phone;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \CNastasi\Serializer\Serializer\SimpleValueObjectSerializer
+ */
 class SimpleValueObjectSerializerTest extends TestCase
 {
     /**

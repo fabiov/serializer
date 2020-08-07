@@ -25,6 +25,11 @@ class Person implements CompositeValueObject
         $this->phone   = $phone;
         $this->parent  = $this;
     }
+
+    public function getName(): Name
+    {
+        return $this->name;
+    }
 }
 //
 // $person = new Person(

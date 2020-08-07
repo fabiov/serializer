@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CNastasi\Serializer\ValueObject;
@@ -29,19 +30,19 @@ abstract class Integer implements SimpleValueObject
      * @inheritDoc
      *
      */
-    public function __getPrimitiveValue(): int
+    public function value(): int
     {
         return $this->value;
     }
 
-    private function assertIsInteger($value)
+    private function assertIsInteger($value): void
     {
-        if (!is_integer($value)) {
+        if (!is_int($value)) {
             throw new WrongTypeException($value, 'Integer');
         }
     }
 
-    private function assertIsInRange($value)
+    private function assertIsInRange($value): void
     {
         if ($value < $this->min || $value > $this->max) {
             throw new OutOfRangeException($this->min, $this->max, $value);

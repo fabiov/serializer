@@ -1,5 +1,11 @@
 # Serializer
 
+It permits to serialize and unserialize value objects. 
+
+- *Simple Objects:* With just a primitive inside
+- *Composite Objects:* Objects formed by composition of two or more Simple Objects
+- *Collections:* Objects formed by a collection of Simple or Composite objects
+
 ### How to install
 
 ### How to use

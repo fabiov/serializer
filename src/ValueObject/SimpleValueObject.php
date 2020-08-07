@@ -2,7 +2,7 @@
 
 namespace CNastasi\Serializer\ValueObject;
 
-interface SimpleValueObject
+interface SimpleValueObject extends ValueObject
 {
     /**
      * SimpleValueObject constructor.
@@ -14,5 +14,5 @@ interface SimpleValueObject
     /**
      * @return mixed
      */
-    public function __getPrimitiveValue();
+    public function value();
 }

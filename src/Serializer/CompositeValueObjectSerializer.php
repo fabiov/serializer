@@ -58,6 +58,10 @@ class CompositeValueObjectSerializer implements ValueObjectSerializer
      */
     private function serializeRecursively(object $object, array &$references, int $depth)
     {
+        if ($object instanceof SimpleValueObject) {
+            return $this->simpleValueObjectSerializer->serialize($object);
+        }
+
         if (!($object instanceof CompositeValueObject)) {
             throw new UnableToSerializeException($object);
         }

@@ -7,6 +7,9 @@ use CNastasi\Example\Name;
 use CNastasi\Example\Phone;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \CNastasi\Serializer\Unserializer\SimpleValueObjectUnserializer
+ */
 class SimpleValueObjectUnserializerTest extends TestCase
 {
     /**
@@ -20,7 +23,7 @@ class SimpleValueObjectUnserializerTest extends TestCase
         $object = $unserializer->unserialize($value, $class);
 
         $this->assertInstanceOf($class, $object);
-        $this->assertEquals($value, $object->__getPrimitiveValue());
+        $this->assertEquals($value, $object->value());
     }
 
     public function dataProvider()

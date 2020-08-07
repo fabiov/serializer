@@ -13,7 +13,7 @@ class Phone implements SimpleValueObject
         $this->value = $value;
     }
 
-    public function __getPrimitiveValue()
+    public function value()
     {
         return $this->value;
     }

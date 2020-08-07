@@ -13,7 +13,7 @@ class Name implements SimpleValueObject
         $this->value = $value;
     }
 
-    public function __getPrimitiveValue(): string
+    public function value(): string
     {
         return $this->value;
     }
