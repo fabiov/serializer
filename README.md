@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/b2cf2c1598184067a3d5/maintainability)](https://codeclimate.com/github/cnastasi/serializer/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b2cf2c1598184067a3d5/test_coverage)](https://codeclimate.com/github/cnastasi/serializer/test_coverage)
+
 # Serializer
 
 It permits to serialize and unserialize value objects. 
