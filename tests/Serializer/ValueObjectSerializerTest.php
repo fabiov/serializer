@@ -1,15 +1,13 @@
 <?php
 
-namespace CNastasi\Serializer;
+namespace CNastasi\Serializer\Serializer;
 
 use CNastasi\Example\Address;
 use CNastasi\Example\Age;
+use CNastasi\Example\Classroom;
 use CNastasi\Example\Name;
 use CNastasi\Example\Phone;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
-use Cnastasi\Serializer\Serializer\CompositeValueObjectSerializer;
-use CNastasi\Serializer\Serializer\SimpleValueObjectSerializer;
-use CNastasi\Serializer\Serializer\ValueObjectSerializerDefault;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,11 +21,16 @@ class ValueObjectSerializerTest extends TestCase
     {
         parent::setUp();
 
-        $simpleValueObjectSerializer    = new SimpleValueObjectSerializer();
+        $simpleValueObjectSerializer = new SimpleValueObjectSerializer();
         $compositeValueObjectSerializer = new CompositeValueObjectSerializer($simpleValueObjectSerializer);
+        $collectionSerializer = new CollectionSerializer($compositeValueObjectSerializer);
 
         $this->serializer = new ValueObjectSerializerDefault(
-            [$simpleValueObjectSerializer, $compositeValueObjectSerializer]
+            [
+                $simpleValueObjectSerializer,
+                $compositeValueObjectSerializer,
+                $collectionSerializer
+            ]
         );
     }
 
@@ -36,13 +39,13 @@ class ValueObjectSerializerTest extends TestCase
      */
     public function shouldSerializeASimpleValueObject()
     {
-        $age   = 37;
-        $name  = 'John Smith';
+        $age = 37;
+        $name = 'John Smith';
         $phone = '+39 98765321';
 
-        $this->assertEquals($age, $this->serializer->serialize(new Age($age)));
-        $this->assertEquals($name, $this->serializer->serialize(new Name($name)));
-        $this->assertEquals($phone, $this->serializer->serialize(new Phone($phone)));
+        self::assertEquals($age, $this->serializer->serialize(new Age($age)));
+        self::assertEquals($name, $this->serializer->serialize(new Name($name)));
+        self::assertEquals($phone, $this->serializer->serialize(new Phone($phone)));
     }
 
     /**
@@ -51,14 +54,34 @@ class ValueObjectSerializerTest extends TestCase
     public function shouldSerializeACompositeValueObject()
     {
         $street = '115 Somewhere Street';
-        $city   = 'Unknown Town';
+        $city = 'Unknown Town';
 
-        $this->assertEquals([
-            'city'   => $city,
-            'street' => $street
-        ],
+        self::assertEquals(
+            [
+                'city' => $city,
+                'street' => $street
+            ],
             $this->serializer->serialize(new Address($street, $city))
         );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeACollection()
+    {
+        $names = [
+            "Pippo Franco",
+            'Mario Mario',
+            'Ginetto',
+        ];
+
+        $classroom = new Classroom();
+        $classroom->addItem(new Name('Pippo Franco'));
+        $classroom->addItem(new Name('Mario Mario'));
+        $classroom->addItem(new Name('Ginetto'));
+
+        self::assertEquals($names, $this->serializer->serialize($classroom));
     }
 
     /**
