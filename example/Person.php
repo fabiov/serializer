@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CNastasi\Example;
 
-use CNastasi\Serializer\ValueObject\CompositeValueObject;
+use CNastasi\Serializer\Contract\CompositeValueObject;
 
 class Person implements CompositeValueObject
 {
@@ -11,8 +11,6 @@ class Person implements CompositeValueObject
     private Age                       $age;
     private Address                   $address;
     private ?Phone                    $phone;
-
-    private Person                    $parent;
 
     public function __construct(Name $name,
                                 Age $age,
@@ -23,7 +21,6 @@ class Person implements CompositeValueObject
         $this->age     = $age;
         $this->address = $address;
         $this->phone   = $phone;
-        $this->parent  = $this;
     }
 
     public function getName(): Name

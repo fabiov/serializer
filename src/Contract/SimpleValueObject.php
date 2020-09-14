@@ -1,6 +1,8 @@
 <?php
 
-namespace CNastasi\Serializer\ValueObject;
+namespace CNastasi\Serializer\Contract;
+
+use CNastasi\Serializer\Contract\ValueObject;
 
 interface SimpleValueObject extends ValueObject
 {

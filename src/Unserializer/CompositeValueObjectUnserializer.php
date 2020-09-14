@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Unserializer;
 
+use CNastasi\Serializer\Exception\NullValueFoundException;
 use CNastasi\Serializer\Exception\UnableToUnserializeException;
-use CNastasi\Serializer\ValueObject\CompositeValueObject;
-use CNastasi\Serializer\ValueObject\SimpleValueObject;
-use CNastasi\Serializer\ValueObject\ValueObject;
+use CNastasi\Serializer\Contract\CompositeValueObject;
+use CNastasi\Serializer\Contract\SimpleValueObject;
+use CNastasi\Serializer\Contract\ValueObject;
 use Exception;
 use ReflectionClass;
 
@@ -45,7 +46,7 @@ class CompositeValueObjectUnserializer implements ValueObjectUnserializer
             $value = $data[$name];
 
             if ($value === null && !$type->allowsNull()) {
-                throw new Exception("{$name} must be {$type}, null used");
+                throw new NullValueFoundException($name, (string) $type);
             }
 
             if ($type->isBuiltin() || $value === null) {

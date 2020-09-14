@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CNastasi\Serializer\Exception;
@@ -7,8 +8,13 @@ use RuntimeException;
 
 class UnableToSerializeException extends RuntimeException
 {
-    public function __construct(object $object)
+    /**
+     * @param object|string $object
+     */
+    public function __construct($object)
     {
-        parent::__construct('Serializer was not able to serialize ' . get_class($object));
+        $className = is_object($object) ? get_class($object) : $object;
+
+        parent::__construct("Serializer was not able to serialize {$className}");
     }
 }

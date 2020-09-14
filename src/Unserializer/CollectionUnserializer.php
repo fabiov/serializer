@@ -6,9 +6,9 @@ namespace CNastasi\Serializer\Unserializer;
 
 use CNastasi\Serializer\Exception\UnacceptableTargetClassException;
 use CNastasi\Serializer\Exception\WrongTypeException;
-use CNastasi\Serializer\ValueObject\Collection;
-use CNastasi\Serializer\ValueObject\SimpleValueObject;
-use CNastasi\Serializer\ValueObject\ValueObject;
+use CNastasi\Serializer\Contract\Collection;
+use CNastasi\Serializer\Contract\SimpleValueObject;
+use CNastasi\Serializer\Contract\ValueObject;
 
 class CollectionUnserializer implements ValueObjectUnserializer
 {

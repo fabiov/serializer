@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace CNastasi\Serializer\Unserializer;
 
 use CNastasi\Serializer\Exception\UnacceptableTargetClassException;
-use CNastasi\Serializer\ValueObject\SimpleValueObject;
-use CNastasi\Serializer\ValueObject\ValueObject;
+use CNastasi\Serializer\Contract\SimpleValueObject;
+use CNastasi\Serializer\Contract\ValueObject;
 
 class SimpleValueObjectUnserializer implements ValueObjectUnserializer
 {
@@ -18,3 +18,8 @@ class SimpleValueObjectUnserializer implements ValueObjectUnserializer
         return new $targetClass($value);
     }
 }
+
+
+// Simple
+// composite
+// collection

@@ -45,13 +45,13 @@ use CNastasi\Example\Person;
 use CNastasi\Example\Phone;
 use CNastasi\Serializer\Serializer\CompositeValueObjectSerializer;
 use CNastasi\Serializer\Serializer\SimpleValueObjectSerializer;
-use CNastasi\Serializer\Serializer\ValueObjectSerializerDefault;
+use CNastasi\Serializer\DefaultSerializer;
 
 // Initialize the Serializer
 $simpleValueObjectSerializer    = new SimpleValueObjectSerializer();
 $compositeValueObjectSerializer = new CompositeValueObjectSerializer($simpleValueObjectSerializer);
 
-$serializer = new ValueObjectSerializerDefault([$simpleValueObjectSerializer, $compositeValueObjectSerializer]);
+$serializer = new DefaultSerializer([$simpleValueObjectSerializer, $compositeValueObjectSerializer]);
 
 // Create your domain objects
 $age     = new Age(37);  // A simple one

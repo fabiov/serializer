@@ -2,7 +2,7 @@
 
 namespace CNastasi\Serializer\Unserializer;
 
-use CNastasi\Serializer\ValueObject\ValueObject;
+use CNastasi\Serializer\Contract\ValueObject;
 
 interface ValueObjectUnserializer
 {

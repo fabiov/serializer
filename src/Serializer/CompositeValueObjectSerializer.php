@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Serializer;
 
+use CNastasi\Serializer\Contract\SerializerAware;
+use CNastasi\Serializer\Contract\ValueObjectSerializer;
+use CNastasi\Serializer\Exception\SerializationLoopException;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
-use CNastasi\Serializer\ValueObject\CompositeValueObject;
-use CNastasi\Serializer\ValueObject\SimpleValueObject;
+use CNastasi\Serializer\Contract\CompositeValueObject;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use ReflectionType;
 
-class CompositeValueObjectSerializer implements ValueObjectSerializer
+class CompositeValueObjectSerializer implements ValueObjectSerializer, SerializerAware
 {
-    private const RECURSION_LOOPS = 2;
-    private const MAX_RECURSION = 50;
+    private ValueObjectSerializer $serializer;
+    private SerializationLoopGuard $loopGuard;
 
-    private SimpleValueObjectSerializer $simpleValueObjectSerializer;
 
-    public function __construct(SimpleValueObjectSerializer $simpleValueObjectSerializer)
+    public function __construct(SerializationLoopGuard $loopGuard)
     {
-        $this->simpleValueObjectSerializer = $simpleValueObjectSerializer;
+        $this->loopGuard = $loopGuard;
     }
 
     /**
@@ -30,10 +32,32 @@ class CompositeValueObjectSerializer implements ValueObjectSerializer
      */
     public function serialize(object $object)
     {
-        $references = [];
+        if (!($object instanceof CompositeValueObject)) {
+            throw new UnableToSerializeException($object);
+        }
 
-        return $this->serializeRecursively($object, $references, 0);
+        $data = [];
+
+        $this->loopGuard->addReferenceCount($object);
+
+        $properties = $this->getProperties($object);
+
+        foreach ($properties as $property) {
+            $name = $property->getName();
+            $type = $property->getType();
+            $value = $this->getValue($object, $property);
+
+            $data[$name] = $this->serializeProperty($property, $type, $value);
+        }
+
+        return $data;
     }
+
+    public function accept($object): bool
+    {
+        return $object instanceof CompositeValueObject;
+    }
+
 
     /**
      * @param object $object
@@ -48,94 +72,32 @@ class CompositeValueObjectSerializer implements ValueObjectSerializer
         return $property->getValue($object);
     }
 
+
     /**
-     * @param object $object
-     * @param array $references
-     * @param int $depth
+     * @param $object
      *
      * @return array
+     *
      * @throws ReflectionException
      */
-    private function serializeRecursively(object $object, array &$references, int $depth)
+    private function getProperties(object $object): array
     {
-        if ($object instanceof SimpleValueObject) {
-            return $this->simpleValueObjectSerializer->serialize($object);
-        }
+        $class = $object instanceof ReflectionClass
+            ? $object
+            : new ReflectionClass($object);
 
-        if (!($object instanceof CompositeValueObject)) {
-            throw new UnableToSerializeException($object);
-        }
-
-        if ($this->thereIsALoop($object, $references)) {
-            return null;
-        }
-
-        if ($depth >= self::MAX_RECURSION) {
-            return null;
-        }
-
-        $data = [];
-        $class = new ReflectionClass($object);
-        $properties = $this->getProperties($class);
-
-        foreach ($properties as $property) {
-            $name = $property->getName();
-            $type = $property->getType();
-
-            $value = $this->getValue($object, $property);
-
-            if ($type->isBuiltin() || $value === null) {
-                $result = $value;
-            } else {
-                if ($value instanceof SimpleValueObject) {
-                    $result = $this->simpleValueObjectSerializer->serialize($value);
-                } else {
-                    if ($value instanceof CompositeValueObject) {
-                        $result = $this->serializeRecursively($value, $references, $depth + 1);
-                    } else {
-                        throw new UnableToSerializeException($value);
-                    }
-                }
-            }
-
-            $data[$name] = $result;
-        }
-
-        return $data;
+        return array_merge($this->getProperties($class->getParentClass()), $class->getProperties());
     }
 
-    /**
-     * @param ReflectionClass|false
-     */
-    private function getProperties($class): array
+    private function serializeProperty(ReflectionProperty $property, ReflectionType $type, $value)
     {
-        if (!$class) {
-            return [];
-        }
-    
-        $properties = $class->getProperties();
-
-        $properties = array_merge($this->getProperties($class->getParentClass()), $properties);
-
-        return $properties;
+        return ($type->isBuiltin() || $value === null)
+            ? $value
+            : $this->serializer->serialize($value);
     }
 
-    private function thereIsALoop(CompositeValueObject $object, array &$references): bool
+    public function setSerializer(ValueObjectSerializer $serializer): void
     {
-        $objectId = spl_object_id($object);
-
-        if (!isset($references[$objectId])) {
-            $references[$objectId] = 0;
-        }
-
-        $references[$objectId]++;
-
-        return $references[$objectId] > self::RECURSION_LOOPS;
-    }
-
-    public function accept($object): bool
-    {
-        return $object instanceof CompositeValueObject
-            || $object instanceof SimpleValueObject;
+        $this->serializer = $serializer;
     }
 }

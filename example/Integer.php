@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CNastasi\Serializer\ValueObject;
+namespace CNastasi\Example;
 
 use CNastasi\Serializer\Exception\OutOfRangeException;
 use CNastasi\Serializer\Exception\WrongTypeException;
+use CNastasi\Serializer\Contract\SimpleValueObject;
 
 abstract class Integer implements SimpleValueObject
 {

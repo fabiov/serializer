@@ -2,7 +2,7 @@
 
 namespace CNastasi\Example;
 
-use CNastasi\Serializer\ValueObject\SimpleValueObject;
+use CNastasi\Serializer\Contract\SimpleValueObject;
 
 class Phone implements SimpleValueObject
 {
