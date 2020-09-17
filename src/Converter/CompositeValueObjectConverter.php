@@ -77,7 +77,9 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
                 throw new NullValueFoundException($name, $typeAsString);
             }
 
-            $args[$name] = $this->serializer->hydrate($typeAsString, $value, false);
+            $args[$name] = $value
+                ? $this->serializer->hydrate($typeAsString, $value, false)
+                : null;
         }
 
         /** @var ValueObject $result */
