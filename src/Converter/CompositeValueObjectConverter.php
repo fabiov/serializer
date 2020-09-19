@@ -9,6 +9,7 @@ use CNastasi\Serializer\Contract\LoopGuardAware;
 use CNastasi\Serializer\Contract\SerializerAware;
 use CNastasi\Serializer\Contract\ValueObject;
 use CNastasi\Serializer\Exception\NullValueFoundException;
+use CNastasi\Serializer\Exception\TypeNotFoundException;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
 use CNastasi\Serializer\Exception\UnacceptableTargetClassException;
 use CNastasi\Serializer\Exception\WrongTypeException;
@@ -16,13 +17,25 @@ use CNastasi\Serializer\LoopGuardAwareTrait;
 use CNastasi\Serializer\SerializerAwareTrait;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionProperty;
 
+/**
+ * Class CompositeValueObjectConverter
+ * @package CNastasi\Serializer\Converter
+ *
+ * @template T of CompositeValueObject
+ * @implements ValueObjectConverter<T>
+ */
 class CompositeValueObjectConverter implements ValueObjectConverter, SerializerAware, LoopGuardAware
 {
     use SerializerAwareTrait;
     use LoopGuardAwareTrait;
 
+    /**
+     * @inheritDoc
+     */
     public function serialize(object $object)
     {
         if (!$this->accept($object)) {
@@ -45,6 +58,11 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
         return $data;
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
     public function hydrate(string $targetClass, $data): ValueObject
     {
         if (!$this->accept($targetClass)) {
@@ -55,6 +73,7 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
             throw new WrongTypeException($data, 'array');
         }
 
+        /** @var ReflectionClass<CompositeValueObject> $class */
         $class = new ReflectionClass($targetClass);
 
         $parameters = $this->getConstructorParameters($class);
@@ -62,7 +81,9 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
         $args = [];
 
         foreach ($parameters as $parameter) {
-            $type = $parameter->getType();
+            $type = $this->getReflectionType($targetClass, $parameter);
+
+            /** @var class-string $typeAsString */
             $typeAsString = $type->getName();
             $name = $parameter->getName();
 
@@ -72,17 +93,25 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
                 throw new NullValueFoundException($name, $typeAsString);
             }
 
-            $args[$name] = $value
+            $args[] = $value
                 ? $this->serializer->hydrate($typeAsString, $value, false)
                 : null;
         }
 
-        /** @var ValueObject $result */
+        /**
+         * @phpstan-var T $result
+         * @var CompositeValueObject
+         */
         $result = $class->newInstanceArgs($args);
 
         return $result;
     }
 
+    /**
+     * @param class-string|CompositeValueObject $object
+     *
+     * @return bool
+     */
     public function accept($object): bool
     {
         return is_a($object, CompositeValueObject::class, true);
@@ -102,9 +131,9 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
     }
 
     /**
-     * @param $object
+     * @param object $object
      *
-     * @return array
+     * @return ReflectionProperty[]
      *
      * @throws ReflectionException
      */
@@ -121,10 +150,33 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
             : $class->getProperties();
     }
 
+    /**
+     * @param ReflectionClass<CompositeValueObject> $class
+     *
+     * @return ReflectionParameter[]
+     */
     private function getConstructorParameters(ReflectionClass $class): array
     {
         $constructor = $class->getConstructor();
 
         return $constructor ? $constructor->getParameters() : [];
+    }
+
+    /**
+     * @param string $className
+     * @param ReflectionParameter $parameter
+     *
+     * @return ReflectionNamedType
+     */
+    private function getReflectionType(string $className, ReflectionParameter $parameter): ReflectionNamedType
+    {
+        /** @var ReflectionNamedType|null $type */
+        $type = $parameter->getType();
+
+        if (!$type) {
+            throw new TypeNotFoundException($className, $parameter->getName());
+        }
+
+        return $type;
     }
 }

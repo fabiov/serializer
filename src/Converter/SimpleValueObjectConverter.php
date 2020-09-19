@@ -9,6 +9,12 @@ use CNastasi\Serializer\Exception\UnacceptableTargetClassException;
 use CNastasi\Serializer\Contract\SimpleValueObject;
 use CNastasi\Serializer\Contract\ValueObject;
 
+/**
+ * Class SimpleValueObjectConverter
+ * @package CNastasi\Serializer\Converter
+ *
+ * @implements ValueObjectConverter<SimpleValueObject>
+ */
 class SimpleValueObjectConverter implements ValueObjectConverter
 {
     /**

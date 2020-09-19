@@ -8,7 +8,8 @@ use CNastasi\Serializer\Exception\SerializationLoopException;
 
 final class SerializationLoopGuard
 {
-    private array $referenceCount;
+    /** @var array<int>  */
+    private array $referenceCount = [];
     private int $maxLoops;
 
     public function __construct(int $maxLoops = 3)

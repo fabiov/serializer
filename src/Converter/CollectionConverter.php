@@ -14,11 +14,24 @@ use CNastasi\Serializer\Exception\WrongTypeException;
 use CNastasi\Serializer\LoopGuardAwareTrait;
 use CNastasi\Serializer\SerializerAwareTrait;
 
+/**
+ * Class CollectionConverter
+ * @package CNastasi\Serializer\Converter
+ *
+ * @template T of Collection<ValueObject>
+ * @implements ValueObjectConverter<T>
+ */
 class CollectionConverter implements ValueObjectConverter, SerializerAware, LoopGuardAware
 {
     use SerializerAwareTrait;
     use LoopGuardAwareTrait;
 
+    /**
+     * @phpstan-param T $object
+     * @param object $object
+     *
+     * @return array<mixed>
+     */
     public function serialize(object $object)
     {
         if (!$this->accept($object)) {
@@ -36,17 +49,32 @@ class CollectionConverter implements ValueObjectConverter, SerializerAware, Loop
         return $result;
     }
 
+    public function accept($object): bool
+    {
+        return is_a($object, Collection::class, true);
+    }
+
+    /**
+     * @param string $targetClass
+     * @param array<mixed>|mixed $value
+     *
+     * @return ValueObject
+     * @phpstan-return T
+     *
+     * @throws UnacceptableTargetClassException
+     * @throws WrongTypeException
+     */
     public function hydrate(string $targetClass, $value): ValueObject
     {
         if (!$this->accept($targetClass)) {
             throw new UnacceptableTargetClassException($targetClass);
         }
 
-        if (!is_array($value) && !$value instanceof \Iterator) {
+        if (!is_iterable($value)) {
             throw new WrongTypeException(get_class($value), 'Iterable');
         }
 
-        /** @var Collection $collection */
+        /** @phpstan-var T $collection */
         $collection = new $targetClass();
 
         foreach ($value as $item) {
@@ -56,10 +84,5 @@ class CollectionConverter implements ValueObjectConverter, SerializerAware, Loop
         }
 
         return $collection;
-    }
-
-    public function accept($object): bool
-    {
-        return is_a($object, Collection::class, true);
     }
 }

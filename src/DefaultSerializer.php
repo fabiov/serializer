@@ -6,16 +6,21 @@ namespace CNastasi\Serializer;
 
 use CNastasi\Serializer\Contract\LoopGuardAware;
 use CNastasi\Serializer\Contract\SerializerAware;
+use CNastasi\Serializer\Contract\ValueObject;
 use CNastasi\Serializer\Contract\ValueObjectSerializer;
 use CNastasi\Serializer\Converter\ValueObjectConverter;
 
 class DefaultSerializer implements ValueObjectSerializer
 {
-    /** @var ValueObjectConverter[] */
+    /** @var ValueObjectConverter<ValueObject>[] */
     private array $converters;
 
     private SerializationLoopGuard $loopGuard;
 
+    /**
+     * @param ValueObjectConverter<ValueObject>[] $converters
+     * @param SerializationLoopGuard $loopGuard
+     */
     public function __construct(array $converters, SerializationLoopGuard $loopGuard)
     {
         $this->loopGuard = $loopGuard;
@@ -49,11 +54,10 @@ class DefaultSerializer implements ValueObjectSerializer
             : $value;
     }
 
-    public function accept($object): bool
-    {
-        return true;
-    }
-
+    /**
+     * @param string|object $object
+     * @return ValueObjectConverter<ValueObject>|null
+     */
     private function findConverter($object): ?ValueObjectConverter
     {
         foreach ($this->converters as $serializer) {
@@ -65,6 +69,9 @@ class DefaultSerializer implements ValueObjectSerializer
         return null;
     }
 
+    /**
+     * @param ValueObjectConverter<ValueObject> $converter
+     */
     private function addConverter(ValueObjectConverter $converter): void
     {
         if ($converter instanceof SerializerAware) {

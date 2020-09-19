@@ -6,10 +6,20 @@ namespace CNastasi\Serializer\Contract;
 
 use IteratorAggregate;
 
-
+/**
+ * @template T of ValueObject
+ * @extends IteratorAggregate<ValueObject>
+ */
 interface Collection extends IteratorAggregate, ValueObject
 {
-    public function addItem($item): void;
+    /**
+     * @phpstan-param T $item
+     * @param ValueObject $item
+     */
+    public function addItem(ValueObject $item): void;
 
+    /**
+     * @return class-string
+     */
     public function getItemType(): string;
 }
