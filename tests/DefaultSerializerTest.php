@@ -46,7 +46,7 @@ class DefaultSerializerTest extends TestCase
      * @dataProvider dataProvider
      *
      * @param object $valueObject
-     * @param $expectedResult
+     * @param mixed $expectedResult
      */
     public function shouldSerializeAndHydrate(object $valueObject, $expectedResult): void
     {
@@ -56,6 +56,9 @@ class DefaultSerializerTest extends TestCase
         self::assertEquals($valueObject, $this->serializer->hydrate(get_class($valueObject), $result));
     }
 
+    /**
+     * @return iterable<string, mixed>
+     */
     public function dataProvider(): iterable
     {
         yield 'age' => [new Age(42), 42];

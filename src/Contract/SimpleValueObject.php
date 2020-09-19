@@ -2,10 +2,15 @@
 
 namespace CNastasi\Serializer\Contract;
 
+/**
+ * @template T
+ */
 interface SimpleValueObject extends ValueObject
 {
     /**
      * SimpleValueObject constructor.
+     *
+     * @phpstan-param T $value
      *
      * @param mixed $value
      */
@@ -13,6 +18,7 @@ interface SimpleValueObject extends ValueObject
 
     /**
      * @return mixed
+     * @phpstan-return T
      */
     public function value();
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CNastasi\Example;
@@ -7,25 +8,41 @@ use CNastasi\Serializer\Contract\CompositeValueObject;
 
 class Person implements CompositeValueObject
 {
-    private Name                      $name;
-    private Age                       $age;
-    private Address                   $address;
-    private ?Phone                    $phone;
+    private Name $name;
+    private Age $age;
+    private Address $address;
+    private ?Phone $phone;
 
-    public function __construct(Name $name,
-                                Age $age,
-                                Address $address,
-                                ?Phone $phone = null
+    public function __construct(
+        Name $name,
+        Age $age,
+        Address $address,
+        ?Phone $phone = null
     ) {
-        $this->name    = $name;
-        $this->age     = $age;
+        $this->name = $name;
+        $this->age = $age;
         $this->address = $address;
-        $this->phone   = $phone;
+        $this->phone = $phone;
     }
 
     public function getName(): Name
     {
         return $this->name;
+    }
+
+    public function getAge(): Age
+    {
+        return $this->age;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    public function getPhone(): ?Phone
+    {
+        return $this->phone;
     }
 }
 //

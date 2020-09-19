@@ -8,6 +8,13 @@ use CNastasi\Serializer\Exception\OutOfRangeException;
 use CNastasi\Serializer\Exception\WrongTypeException;
 use CNastasi\Serializer\Contract\SimpleValueObject;
 
+
+/**
+ * Class Integer
+ * @package CNastasi\Example
+ *
+ * @implements SimpleValueObject<int>
+ */
 abstract class Integer implements SimpleValueObject
 {
     protected int $min = PHP_INT_MIN;
@@ -36,6 +43,9 @@ abstract class Integer implements SimpleValueObject
         return $this->value;
     }
 
+    /**
+     * @param mixed $value
+     */
     private function assertIsInteger($value): void
     {
         if (!is_int($value)) {
@@ -43,7 +53,8 @@ abstract class Integer implements SimpleValueObject
         }
     }
 
-    private function assertIsInRange($value): void
+
+    private function assertIsInRange(int $value): void
     {
         if ($value < $this->min || $value > $this->max) {
             throw new OutOfRangeException($this->min, $this->max, $value);

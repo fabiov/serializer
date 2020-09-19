@@ -10,15 +10,21 @@ use CNastasi\Serializer\Contract\ValueObject;
 use CNastasi\Serializer\Contract\ValueObjectSerializer;
 use CNastasi\Serializer\Converter\ValueObjectConverter;
 
+/**
+ * Class DefaultSerializer
+ * @package CNastasi\Serializer
+ *
+ */
 class DefaultSerializer implements ValueObjectSerializer
 {
-    /** @var ValueObjectConverter<ValueObject>[] */
+    /** @var ValueObjectConverter<ValueObject>[] $converters */
     private array $converters;
 
     private SerializationLoopGuard $loopGuard;
 
     /**
-     * @param ValueObjectConverter<ValueObject>[] $converters
+     * @phpunit-param array<mixed> $converters
+     * @param array<mixed> $converters
      * @param SerializationLoopGuard $loopGuard
      */
     public function __construct(array $converters, SerializationLoopGuard $loopGuard)

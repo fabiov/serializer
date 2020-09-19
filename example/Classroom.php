@@ -4,15 +4,28 @@ declare(strict_types=1);
 
 namespace CNastasi\Example;
 
+use ArrayObject;
 use CNastasi\Serializer\Contract\Collection;
 
+/**
+ * Class Classroom
+ * @package CNastasi\Example
+ *
+ * @implements Collection<Name>
+ */
 class Classroom implements Collection
 {
-    private \ArrayObject $classroom;
+    /**
+     * @var ArrayObject<int, Name> $classroom
+     */
+    private ArrayObject $classroom;
 
+    /**
+     * @param array<Name> $classroom
+     */
     public function __construct(array $classroom = [])
     {
-        $this->classroom = new \ArrayObject();
+        $this->classroom = new ArrayObject();
 
         foreach ($classroom as $student) {
             $this->addItem($student);

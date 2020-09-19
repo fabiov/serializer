@@ -15,4 +15,14 @@ class Address implements CompositeValueObject
         $this->street = $street;
         $this->city   = $city;
     }
+
+    public function getStreet(): string
+    {
+        return $this->street;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
 }

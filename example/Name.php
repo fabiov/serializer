@@ -4,6 +4,12 @@ namespace CNastasi\Example;
 
 use CNastasi\Serializer\Contract\SimpleValueObject;
 
+/**
+ * Class Name
+ * @package CNastasi\Example
+ *
+ * @implements SimpleValueObject<string>
+ */
 class Name implements SimpleValueObject
 {
     private string $value;
