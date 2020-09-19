@@ -6,6 +6,7 @@ namespace CNastasi\Serializer\Contract;
 
 use IteratorAggregate;
 
+
 interface Collection extends IteratorAggregate, ValueObject
 {
     public function addItem($item): void;
