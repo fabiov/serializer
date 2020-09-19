@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Exception;
 
-class WrongTypeException extends \RuntimeException
+use RuntimeException;
+
+class WrongTypeException extends RuntimeException
 {
     public function __construct($value, string $expectedType)
     {

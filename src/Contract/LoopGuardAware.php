@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Contract;
 
-use CNastasi\Serializer\Serializer\SerializationLoopGuard;
+use CNastasi\Serializer\SerializationLoopGuard;
 
 interface LoopGuardAware
 {

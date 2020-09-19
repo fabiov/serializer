@@ -6,11 +6,8 @@ namespace CNastasi\Serializer;
 
 use CNastasi\Serializer\Contract\LoopGuardAware;
 use CNastasi\Serializer\Contract\SerializerAware;
-use CNastasi\Serializer\Contract\ValueObject;
 use CNastasi\Serializer\Contract\ValueObjectSerializer;
 use CNastasi\Serializer\Converter\ValueObjectConverter;
-use CNastasi\Serializer\Exception\UnableToSerializeException;
-use CNastasi\Serializer\Serializer\SerializationLoopGuard;
 
 class DefaultSerializer implements ValueObjectSerializer
 {

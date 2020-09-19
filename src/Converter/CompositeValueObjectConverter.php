@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Converter;
 
-use Cassandra\Value;
+use CNastasi\Serializer\Contract\CompositeValueObject;
 use CNastasi\Serializer\Contract\LoopGuardAware;
-use CNastasi\Serializer\Contract\SimpleValueObject;
+use CNastasi\Serializer\Contract\SerializerAware;
+use CNastasi\Serializer\Contract\ValueObject;
 use CNastasi\Serializer\Exception\NullValueFoundException;
 use CNastasi\Serializer\Exception\UnableToSerializeException;
-use CNastasi\Serializer\Exception\UnableToUnserializeException;
 use CNastasi\Serializer\Exception\UnacceptableTargetClassException;
 use CNastasi\Serializer\Exception\WrongTypeException;
 use CNastasi\Serializer\LoopGuardAwareTrait;
-use CNastasi\Serializer\Serializer\SerializationLoopGuard;
-use CNastasi\Serializer\Contract\SerializerAware;
 use CNastasi\Serializer\SerializerAwareTrait;
-use CNastasi\Serializer\Contract\CompositeValueObject;
-use CNastasi\Serializer\Contract\ValueObject;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
-use ReflectionType;
 
 class CompositeValueObjectConverter implements ValueObjectConverter, SerializerAware, LoopGuardAware
 {
@@ -128,6 +123,8 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
 
     private function getConstructorParameters(ReflectionClass $class): array
     {
-        return $class->getConstructor()->getParameters();
+        $constructor = $class->getConstructor();
+
+        return $constructor ? $constructor->getParameters() : [];
     }
 }

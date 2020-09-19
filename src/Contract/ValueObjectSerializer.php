@@ -17,7 +17,7 @@ interface ValueObjectSerializer
      * @param mixed $value
      * @param bool $isRoot
      *
-     * @return ValueObject
+     * @return ValueObject|int|string|null
      */
     public function hydrate(string $targetClass, $value, bool $isRoot = true);
 }

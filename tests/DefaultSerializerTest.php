@@ -13,7 +13,7 @@ use CNastasi\Example\Phone;
 use CNastasi\Serializer\Converter\CollectionConverter;
 use CNastasi\Serializer\Converter\CompositeValueObjectConverter;
 use CNastasi\Serializer\Converter\SimpleValueObjectConverter;
-use CNastasi\Serializer\Serializer\SerializationLoopGuard;
+use CNastasi\Serializer\SerializationLoopGuard;
 use PHPUnit\Framework\TestCase;
 
 /**

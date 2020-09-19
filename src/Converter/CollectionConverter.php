@@ -42,7 +42,7 @@ class CollectionConverter implements ValueObjectConverter, SerializerAware, Loop
             throw new UnacceptableTargetClassException($targetClass);
         }
 
-        if (!is_array($value) && !$value instanceof \Iterable) {
+        if (!is_array($value) && !$value instanceof \Iterator) {
             throw new WrongTypeException(get_class($value), 'Iterable');
         }
 

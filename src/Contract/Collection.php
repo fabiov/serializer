@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Contract;
 
-use CNastasi\Serializer\Contract\ValueObject;
+use IteratorAggregate;
 
-interface Collection extends \IteratorAggregate, ValueObject
+interface Collection extends IteratorAggregate, ValueObject
 {
     public function addItem($item): void;
 

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Exception;
 
-class OutOfRangeException extends \RuntimeException
+use RuntimeException;
+
+class OutOfRangeException extends RuntimeException
 {
     public function __construct(int $min, int $max, int $value)
     {
