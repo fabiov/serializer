@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CNastasi\Serializer\Serializer;
+namespace CNastasi\Serializer;
 
 use CNastasi\Serializer\Exception\SerializationLoopException;
 
