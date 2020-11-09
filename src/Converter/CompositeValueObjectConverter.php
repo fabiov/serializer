@@ -87,7 +87,7 @@ class CompositeValueObjectConverter implements ValueObjectConverter, SerializerA
             $typeAsString = $type->getName();
             $name = $parameter->getName();
 
-            $value = $data[$name];
+            $value = $data[$name] ?? null;
 
             if ($value === null && !$type->allowsNull()) {
                 throw new NullValueFoundException($name, $typeAsString);
