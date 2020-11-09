@@ -13,7 +13,7 @@ use CNastasi\Serializer\Contract\SimpleValueObject;
  * Class Integer
  * @package CNastasi\Example
  *
- * @implements SimpleValueObject<int>
+ * @implements Primitive<int>
  */
 abstract class Integer implements SimpleValueObject
 {

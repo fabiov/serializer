@@ -1,13 +1,34 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b2cf2c1598184067a3d5/maintainability)](https://codeclimate.com/github/cnastasi/serializer/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b2cf2c1598184067a3d5/test_coverage)](https://codeclimate.com/github/cnastasi/serializer/test_coverage)
 
-# Serializer
+# Value Object Serializer
+This library is not a full range serializer but is specialized in serializing specific object types. 
+ 
+It permits to serialize and unserialize **Value Objects**.
 
-It permits to serialize and unserialize value objects. 
+## Core concepts
+What's a **Value Object**? It's an object that describe a specific concept inside an application domain. They shall auto-validate themselves, 
+in order to have always consistent data inside your domain. 
 
-- *Simple Objects:* With just a primitive inside
-- *Composite Objects:* Objects formed by composition of two or more Simple Objects
-- *Collections:* Objects formed by a collection of Simple or Composite objects
+Let take as example the concept of `email`. It could be described with a string, p.e. `your.email@domain.com`.
+
+But an email isn't just a *string*. It has specific rules, and should be stricter than a *string*:
+- It should contain the `@` character
+- It should be case-insensitive
+- It should contain a local, and a domain name
+- It should have a minimum and a maximum length
+- ...
+
+Also, a string can be concatenated, an email not. A string can be manipulated, changed or nullified. 
+An email instance shall not ever mutated (otherwise it is another email therefore another instance).
+
+A way to enforce those rules inside your domain and to be sure your data is always consistent (without undesired mutation) it's using the concept of Value Object.
+
+This library introduce 3 kind of Value Objects:
+
+- **Simple Objects:** With just a primitive inside
+- **Composite Objects:** Objects formed by composition of two or more Value Objects
+- **Collections:** Objects formed by a collection of Simple or Composite objects
 
 ### How to install
 

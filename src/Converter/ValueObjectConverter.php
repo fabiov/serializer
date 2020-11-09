@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CNastasi\Serializer\Converter;
 
-use CNastasi\Serializer\Contract\ValueObject;
+use CNastasi\Serializer\Attribute\ValueObject;
 
 /**
  * @template T of ValueObject

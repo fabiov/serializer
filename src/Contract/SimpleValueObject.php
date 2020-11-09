@@ -5,10 +5,10 @@ namespace CNastasi\Serializer\Contract;
 /**
  * @template T
  */
-interface SimpleValueObject extends ValueObject
+interface SimpleValueObject
 {
     /**
-     * SimpleValueObject constructor.
+     * Primitive constructor.
      *
      * @phpstan-param T $value
      *

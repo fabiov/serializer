@@ -2,17 +2,12 @@
 
 namespace CNastasi\Example;
 
-use CNastasi\Serializer\Contract\SimpleValueObject;
+use CNastasi\Serializer\Type\PrimitiveValueObject;
 
-/**
- * Class Phone
- * @package CNastasi\Example
- *
- * @implements SimpleValueObject<string>
- */
-class Phone implements SimpleValueObject
+#[Pri(min: 10, max: 100, regex: '/aaaa/')]
+class Phone extends String
 {
-    private string $value;
+    #[String]private String $value;
 
     public function __construct($value)
     {

@@ -8,7 +8,7 @@ use CNastasi\Serializer\Contract\SimpleValueObject;
  * Class Name
  * @package CNastasi\Example
  *
- * @implements SimpleValueObject<string>
+ * @implements Primitive<string>
  */
 class Name implements SimpleValueObject
 {

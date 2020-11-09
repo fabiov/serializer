@@ -42,7 +42,6 @@ class DefaultSerializerTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider dataProvider
      *
      * @param object $valueObject
